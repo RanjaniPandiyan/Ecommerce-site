@@ -32,8 +32,8 @@ exports.loginAdmin = async (req, res) => {
 
     res.cookie("token", token, {
       httpOnly: true,
-      sameSite: "lax",
-      secure: false, // true in production
+      sameSite: "none",
+      secure: true, // true in production
     });
 
     res.json({
