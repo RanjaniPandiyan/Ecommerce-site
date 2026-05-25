@@ -24,7 +24,7 @@ function Home() {
     <>
       <div className="card">
         <div className="card-body">
-          <div className="row row-cols-sm-6 row-cols-lg-4">
+          <div className="row row-cols-sm-6 row-cols-md-4 row-cols-lg-4">
             <div className="col">
               <div className="card" style={{ backgroundColor: "#EABBFC" }}>
                 <div className="card-body pt-3 p-3">

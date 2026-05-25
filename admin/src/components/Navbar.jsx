@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 
-function Navbar() {
+function Navbar({ toggleSidebar }) {
   return (
     <aside className="left-sidebar">
       <div>
@@ -15,6 +15,7 @@ function Navbar() {
           <div
             className="close-btn d-xl-none d-block sidebartoggler cursor-pointer"
             id="sidebarCollapse"
+            onClick={toggleSidebar}
           >
             <i className="ti ti-x fs-8"></i>
           </div>

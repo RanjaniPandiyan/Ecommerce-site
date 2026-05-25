@@ -5,6 +5,7 @@ exports.createProduct = async (req, res) => {
       return res.status(400).json({ error: "Image required" });
     }
     const protocol = req.protocol;
+    console.log(protocol);
     const host = req.get("host");
     const newProduct = new Product({
       ...req.body,

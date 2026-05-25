@@ -4,7 +4,7 @@ function ProtectedRoutes({ children }) {
   const { user, loading } = useAuth();
   if (loading) {
     return (
-      <div className="container">
+      <div className="container-fluid">
         <img src="./images/backgrounds/loader.gif" />
       </div>
     );

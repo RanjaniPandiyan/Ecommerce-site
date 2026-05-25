@@ -1,7 +1,7 @@
 import axios from "axios";
 import { Link } from "react-router-dom";
 
-function Header() {
+function Header({ toggleSidebar }) {
   const logout = () => {
     localStorage.removeItem("token");
     delete axios.defaults.headers.common["Authorization"];
@@ -16,6 +16,10 @@ function Header() {
               className="nav-link sidebartoggler "
               id="headerCollapse"
               to="#"
+              onClick={(e) => {
+                e.preventDefault(); // Prevents the page from scrolling/refreshing due to to="#"
+                toggleSidebar();
+              }}
             >
               <i className="ti ti-menu-2"></i>
             </Link>
