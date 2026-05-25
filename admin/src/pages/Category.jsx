@@ -12,8 +12,8 @@ function Category() {
   }
   const isDuplicate = categories.some(
     (item) =>
-      item.category.toLowerCase().trim() ===
-      inputs.category.toLowerCase().trim(),
+      item?.category?.toLowerCase().trim() ===
+      inputs?.category?.toLowerCase().trim(),
   );
 
   const handleClick = async (e) => {
