@@ -17,7 +17,7 @@ app.use(cookieParser());
 
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: ["http://localhost:5173", "https://ecommerce-nu-liard.vercel.app"],
     credentials: true,
   }),
 );
