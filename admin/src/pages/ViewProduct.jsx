@@ -22,7 +22,7 @@ function ViewProduct() {
     };
     FetchData();
   }, []);
-  if (!load) {
+  if (load) {
     return (
       <div>
         <img src="./images/backgrounds/loader.gif" />
