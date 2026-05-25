@@ -22,7 +22,7 @@ function Category() {
 
     try {
       const res = await axios.post(
-        "http://localhost:5000/api/category",
+        `${import.meta.env.VITE_API_URL}/api/category`,
         inputs,
       );
       const toast = new window.bootstrap.Toast(toastRef.current);
@@ -36,7 +36,9 @@ function Category() {
   useEffect(() => {
     async function getdata() {
       try {
-        const res = await axios.get("http://localhost:5000/api/category");
+        const res = await axios.get(
+          `${import.meta.env.VITE_API_URL}/api/category`,
+        );
         setCategories(res.data);
       } catch (err) {
         console.log(err);

@@ -6,11 +6,15 @@ function Home() {
   const [product, setProduct] = useState(0);
   useEffect(() => {
     const getproduct = async () => {
-      const res = await axios.get("http://localhost:5000/api/products/count");
+      const res = await axios.get(
+        `${import.meta.env.VITE_API_URL}/api/products/count`,
+      );
       setProduct(res.data);
     };
     const getCategory = async () => {
-      const res = await axios.get("http://localhost:5000/api/category/count");
+      const res = await axios.get(
+        `${import.meta.env.VITE_API_URL}/api/category/count`,
+      );
       setCategory(res.data);
     };
     getproduct();

@@ -18,7 +18,9 @@ function Products() {
   useEffect(() => {
     async function getdata() {
       try {
-        const res = await axios.get("http://localhost:5000/api/category");
+        const res = await axios.get(
+          `${import.meta.env.VITE_API_URL}/api/category`,
+        );
         setCategories(res.data);
       } catch (err) {
         console.log(err);
@@ -37,7 +39,10 @@ function Products() {
 
       formData.append("image", image);
 
-      await axios.post("http://localhost:5000/api/products", formData);
+      await axios.post(
+        `${import.meta.env.VITE_API_URL}/api/products`,
+        formData,
+      );
 
       const toast = new window.bootstrap.Toast(toastRef.current);
       toast.show();

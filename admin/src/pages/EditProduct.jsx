@@ -8,7 +8,9 @@ function EditProduct() {
   const [product, setProduct] = useState({ price: "" });
   useEffect(() => {
     const fetchdata = async () => {
-      const res = await axios.get(`http://localhost:5000/api/products/${id}`);
+      const res = await axios.get(
+        `${import.meta.env.VITE_API_URL}/api/products/${id}`,
+      );
       setProduct(res.data);
     };
     fetchdata();
@@ -24,7 +26,10 @@ function EditProduct() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.put(`http://localhost:5000/api/products/${id}`, product);
+      await axios.put(
+        `${import.meta.env.VITE_API_URL}/api/products/${id}`,
+        product,
+      );
       const toast = new window.bootstrap.Toast(toastRef.current);
       toast.show();
       setTimeout(() => {

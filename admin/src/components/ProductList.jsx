@@ -4,7 +4,7 @@ function ProductList({ category, name, image, id, setProduct }) {
   const handleDelete = async (e) => {
     e.preventDefault();
     try {
-      await axios.delete(`http://localhost:5000/api/products/${id}`);
+      await axios.delete(`${import.meta.env.VITE_API_URL}/api/products/${id}`);
       setProduct((Prev) => Prev.filter((items) => items.id !== id));
     } catch (err) {
       console.log(err);

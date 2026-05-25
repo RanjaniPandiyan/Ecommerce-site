@@ -13,9 +13,12 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     const getUser = async () => {
       try {
-        const res = await axios.get("http://localhost:5000/api/admin/me", {
-          withCredentials: true,
-        });
+        const res = await axios.get(
+          `${import.meta.env.VITE_API_URL}/api/admin/me`,
+          {
+            withCredentials: true,
+          },
+        );
         setUser(res.data.admin);
       } catch {
         setUser(null);
