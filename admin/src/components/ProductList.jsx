@@ -5,7 +5,7 @@ function ProductList({ category, name, image, id, setProduct }) {
     e.preventDefault();
     try {
       await axios.delete(`${import.meta.env.VITE_API_URL}/api/products/${id}`);
-      setProduct((Prev) => Prev.filter((items) => items.id !== id));
+      setProduct((Prev) => Prev.filter((items) => items._id !== id));
     } catch (err) {
       console.log(err);
     }
