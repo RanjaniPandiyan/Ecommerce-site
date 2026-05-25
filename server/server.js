@@ -18,7 +18,7 @@ app.use(cookieParser());
 app.use(
   cors({
     origin: ["http://localhost:5173", "https://dev-ranjani.vercel.app"],
-    withCredentials: true,
+    Credentials: true,
   }),
 );
 app.use(express.json());
