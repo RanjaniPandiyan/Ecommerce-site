@@ -47,7 +47,7 @@ function Products() {
 
       const toast = new window.bootstrap.Toast(toastRef.current);
       toast.show();
-      setTimeout(navigate("/"), 1000);
+      setTimeout(navigate("/products"), 1500);
       setInput({
         category: "",
         name: "",
