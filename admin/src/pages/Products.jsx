@@ -1,7 +1,8 @@
 import axios from "axios";
 import { useEffect, useRef, useState } from "react";
-
+import { useNavigate } from "react-router-dom";
 function Products() {
+  const navigate = useNavigate();
   const toastRef = useRef(null);
   const fileInputRef = useRef(null);
   const [input, setInput] = useState({
@@ -46,9 +47,9 @@ function Products() {
 
       const toast = new window.bootstrap.Toast(toastRef.current);
       toast.show();
+      setTimeout(navigate("/"), 1000);
       setInput({
         category: "",
-        subcategory: "",
         name: "",
         price: "",
         description: "",

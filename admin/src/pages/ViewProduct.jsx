@@ -59,7 +59,7 @@ function ViewProduct() {
                       <ProductList
                         key={items._id}
                         id={items._id}
-                        image={items.image?.url}
+                        image={items?.image?.url}
                         category={items.category}
                         name={items.name}
                         setProduct={setProduct}
