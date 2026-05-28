@@ -109,7 +109,11 @@ function Home() {
         {products.map((items) => (
           <ExploreProducts
             id={items._id}
-            images={items.image?.url}
+            images={
+              items.image?.url
+                ? items.image.url.replace("http://", "https://")
+                : ""
+            }
             name={items.name}
             price={items.price}
             key={items._id}
@@ -126,7 +130,11 @@ function Home() {
         {products.map((items) => (
           <ExploreProducts
             id={items._id}
-            images={items.image?.url}
+            images={
+              items.image?.url
+                ? items.image.url.replace("http://", "https://")
+                : ""
+            }
             name={items.name}
             price={items.price}
             key={items._id}
