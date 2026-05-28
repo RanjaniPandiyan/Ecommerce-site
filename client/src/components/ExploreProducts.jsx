@@ -1,16 +1,17 @@
-function ExploreProducts({ id, images }) {
+function ExploreProducts({ id, images, name, price }) {
   return (
     <div className="col" key={id}>
-      <img
-        src={images}
-        className="img-fluid w-100 hover-shadow"
-        alt=""
-        style={{
-          height: "200px",
-          borderRadius: "30px",
-          objectFit: "cover",
-        }}
-      />
+      <div className="card hover-shadow">
+        <img
+          src={images}
+          className="card-img-top p-3 img-fluid w-100"
+          alt="..."
+        />
+        <div className="card-body">
+          <h6 className="card-title">{name}</h6>
+          <p className="card-text text-center">₹{price}</p>
+        </div>
+      </div>
     </div>
   );
 }

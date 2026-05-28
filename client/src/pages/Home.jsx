@@ -1,32 +1,43 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom";
 import axios from "axios";
+import banner1 from "/images/kidsbanner.png";
+import banner2 from "/images/menbanner.png";
+import banner3 from "/images/toysbanner.png";
+import banner4 from "/images/womenbanner.png";
+import banner5 from "/images/travelbanner.png";
 import ExploreProducts from "../components/ExploreProducts";
-import banner1 from "/images/banner1.jpg";
-import banner2 from "/images/banner2.jpg";
-import banner3 from "/images/banner3.jpg";
+// import { Link } from "react-router-dom";
 function Home() {
-  const banners = [banner1, banner2, banner3];
+  const banners = [banner1, banner2, banner3, banner4, banner5];
   const [data, setData] = useState([]);
+  const [products, setProduct] = useState([]);
   //axios
   useEffect(() => {
     const fetchdata = async () => {
       try {
         const res = await axios.get("/data.json");
-        setData(res.data.products);
+        setData(res.data);
+        const response = await axios.get(
+          "http://localhost:5000/api/products/time",
+        );
+        setProduct(response.data);
       } catch (err) {
         console.log(err);
       }
     };
     fetchdata();
   }, []);
-
-  // filter products
-  const menpro = data?.filter((items) => items.category === "Mens");
-  const womenpro = data?.filter((items) => items.category === "Womens");
-  const kidspro = data?.filter((items) => items.category === "Kids");
+  const categories = [
+    { key: "men", label: "Mens" },
+    { key: "kids", label: "Kids" },
+    { key: "women", label: "Womens" },
+    { key: "travel", label: "Travel" },
+    { key: "toys", label: "Toys" },
+  ];
   return (
     <div id="home">
+      {/* Banners */}
       <div
         id="carouselExampleControls"
         className="carousel slide"
@@ -41,8 +52,8 @@ function Home() {
             >
               <img
                 src={img}
-                className="d-block w-100"
-                style={{ height: 500 }}
+                className="d-block w-100 object-fit-cover"
+                style={{ height: 200, backgroundSize: "cover" }}
                 alt="..."
                 key={index}
               />
@@ -74,71 +85,53 @@ function Home() {
           <span className="visually-hidden">Next</span>
         </button>
       </div>
-      <div className="mt-5" style={{ fontFamily: "cursive" }}>
-        <div className="text-black text-center mb-5" id="men">
-          <h2>Mens Collection</h2>
-        </div>
-        <div
-          className="container shadow"
-          style={{ backgroundColor: "#ccffff", borderRadius: 30 }}
-        >
-          <div className="row row-cols-2 row-cols-md-3 row-cols-lg-4 g-2 p-2 pb-4">
-            {menpro.slice(0, 4).map((items) => (
-              <ExploreProducts id={items.id} images={items.image} />
-            ))}
+      {/* Quick Links */}
+      <div className="row row-cols-md-5 row-cols-sm-5 g-0 d-flex justify-content-center p-4">
+        {categories.map((cat) => (
+          <div className="col text-center" key={cat.key}>
+            <img
+              src={data ? data[cat.key] : ""}
+              className="rounded-circle object-fit-cover"
+              style={{ width: 100, height: 100 }}
+            />
+
+            <h6 className="text-dark mt-2">{cat.label}</h6>
           </div>
-          <div className="d-flex justify-content-center pb-4">
-            <Link to="/products/Mens">
-              <button className="btn btn-warning hover-shadow">
-                View More
-              </button>
-            </Link>
-          </div>
-        </div>
+        ))}
       </div>
-      <div className="mt-5" style={{ fontFamily: "cursive" }}>
-        <div className="text-black text-center mb-5" id="women">
-          <h2>Womens Collection</h2>
-        </div>
-        <div
-          className="container shadow"
-          style={{ backgroundColor: "#ccffff", borderRadius: 30 }}
-        >
-          <div className="row row-cols-2 row-cols-md-3 row-cols-lg-4 g-2 p-2 pb-4">
-            {womenpro.slice(0, 4).map((items) => (
-              <ExploreProducts id={items.id} images={items.image} />
-            ))}
-          </div>
-          <div className="d-flex justify-content-center pb-4">
-            <Link to="/products/Womens">
-              <button className="btn btn-warning hover-shadow">
-                View More
-              </button>
-            </Link>
-          </div>
-        </div>
+      {/* New arrivals */}
+      <div className="mt-2 p-3">
+        <h3 className="text-dark text-center" style={{ fontFamily: "georgia" }}>
+          New Arrivals
+        </h3>
       </div>
-      <div className="mt-5 mb-5" style={{ fontFamily: "cursive" }}>
-        <div className="text-black text-center mb-5" id="kids">
-          <h2>Kids Collection</h2>
-        </div>
-        <div
-          className="container shadow"
-          style={{ backgroundColor: "#ccffff", borderRadius: 30 }}
-        >
-          <div className="row row-cols-2 row-cols-md-3 row-cols-lg-4 g-2 p-2 pb-4">
-            {kidspro.slice(0, 4).map((items) => (
-              <ExploreProducts id={items.id} images={items.image} />
-            ))}
-          </div>
-          <div className="d-flex justify-content-center pb-4">
-            <Link to="/products/Kids">
-              <button className="btn btn-warning hover-shadow">
-                View More
-              </button>
-            </Link>
-          </div>
-        </div>
+      <div className="row row-cols-2 row-cols-sm-2 row-cols-md-5 d-flex justify-content-center g-3">
+        {products.map((items) => (
+          <ExploreProducts
+            id={items._id}
+            images={items.image?.url}
+            name={items.name}
+            price={items.price}
+            key={items._id}
+          />
+        ))}
+      </div>
+      {/* Promo Banners */}
+      <div className="mt-2 p-3">
+        <h3 className="text-dark text-center" style={{ fontFamily: "georgia" }}>
+          Category
+        </h3>
+      </div>
+      <div className="row row-cols-2 row-cols-sm-2 row-cols-md-5 d-flex justify-content-center g-3">
+        {products.map((items) => (
+          <ExploreProducts
+            id={items._id}
+            images={items.image?.url}
+            name={items.name}
+            price={items.price}
+            key={items._id}
+          />
+        ))}
       </div>
     </div>
   );

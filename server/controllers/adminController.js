@@ -3,11 +3,11 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
 async function createAdmin() {
-  const existing = await Admin.findOne({ name: "shopy" });
-  const hash = await bcrypt.hash("shopysite", 10);
+  const existing = await Admin.findOne({ name: "admin" });
+  const hash = await bcrypt.hash("admin123", 10);
 
   await Admin.create({
-    name: "shopy",
+    name: "admin",
     password: hash,
   });
 
@@ -33,7 +33,7 @@ exports.loginAdmin = async (req, res) => {
     res.cookie("token", token, {
       httpOnly: true,
       sameSite: "none",
-      secure: true, // true in production
+      secure: true,
     });
 
     res.json({

@@ -55,7 +55,7 @@ function Navbar() {
             </li>
           </ul>
           <ul className="navbar-nav mb-2 mb-lg-0">
-            <li className="nav-item">
+            <li className="nav-item" title="Profile">
               <Link to="/Login">
                 <i
                   className="fa fa-user"
@@ -64,10 +64,10 @@ function Navbar() {
                 ></i>
               </Link>
             </li>
-            <li className="nav-item">
+            <li className="nav-item" title="Wishlist">
               <i className="fa fa-heart-o" aria-hidden="true"></i>
             </li>
-            <li className="nav-item">
+            <li className="nav-item" title="Cart">
               <i className="fa fa-shopping-cart" aria-hidden="true"></i>
             </li>
           </ul>

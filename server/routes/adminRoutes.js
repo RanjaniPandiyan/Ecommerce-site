@@ -1,5 +1,5 @@
 const router = require("express").Router();
-const auth = require("../middleware/auth");
+const { verifyToken, restrictTo } = require("../middleware/auth");
 
 const {
   loginAdmin,
@@ -9,6 +9,6 @@ const {
 
 router.post("/login", loginAdmin);
 router.post("/logout", logoutAdmin);
-router.get("/me", auth, getAdmin);
+router.get("/me", verifyToken, restrictTo("admin"), getAdmin);
 
 module.exports = router;

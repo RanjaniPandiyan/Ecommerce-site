@@ -77,6 +77,11 @@ function Login() {
 
             <button className="btn btn-outline-primary w-100">Login</button>
           </form>
+          <a href="http://localhost:5174/login">
+            <p className="btn btn-dark text-center mt-3 w-100">
+              Change User account{" "}
+            </p>
+          </a>
         </div>
       </div>
     </div>

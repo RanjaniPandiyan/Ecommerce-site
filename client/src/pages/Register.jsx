@@ -1,23 +1,39 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
 function Register() {
-  const [pass, setPass] = useState("");
-  const [cpass, setCpass] = useState("");
+  const navigate = useNavigate();
+  const [input, setInput] = useState({
+    user: "",
+    password: "",
+    cpassword: "",
+  });
   const [msg, setMsg] = useState("");
-  function handleChange(e) {
-    setPass(e.target.value);
-  }
-  function handleChange2(e) {
-    setCpass(e.target.value);
-  }
-  function password(e) {
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setInput((values) => ({ ...values, [name]: value }));
+  };
+  const handleSubmit = (e) => {
     e.preventDefault();
-    if (pass !== cpass) {
+    if (input.password !== input.cpassword) {
       setMsg("Password Doesn't Match");
+      return;
     } else {
-      setMsg("Password Confirmed");
+      setMsg("");
+      try {
+        const userData = async () => {
+          await axios.post("http://localhost:5000/api/user", {
+            user: input.user,
+            password: input.password,
+          });
+          navigate("/login");
+        };
+        userData();
+      } catch (err) {
+        console.log(err);
+      }
     }
-  }
+  };
   return (
     <div className="container-fluid min-vh-100 d-flex align-items-center justify-content-center bg-light">
       <div
@@ -38,13 +54,16 @@ function Register() {
         <div className="col-12 col-md-6 p-5">
           <h2 className="text-center mb-4 fw-bold">Register</h2>
 
-          <form onSubmit={password}>
+          <form onSubmit={handleSubmit}>
             <div className="mb-3">
-              <label className="form-label">Enter Mobile Number</label>
+              <label className="form-label">Enter Email Id</label>
               <input
-                type="text"
+                type="email"
                 className="form-control"
-                placeholder="Enter Mobile Number"
+                placeholder="Enter Your Mail Id"
+                name="user"
+                value={input.user}
+                onChange={handleChange}
                 required
               />
             </div>
@@ -56,6 +75,8 @@ function Register() {
                 className="form-control"
                 placeholder="Enter password"
                 autoComplete="new-password"
+                name="password"
+                value={input.password}
                 onChange={handleChange}
                 required
               />
@@ -67,7 +88,9 @@ function Register() {
                 className="form-control"
                 placeholder="Re-Enter password"
                 autoComplete="new-password"
-                onChange={handleChange2}
+                name="cpassword"
+                value={input.cpassword}
+                onChange={handleChange}
                 required
               />
               <span className="text-danger">{msg}</span>

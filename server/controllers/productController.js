@@ -32,6 +32,21 @@ exports.getProducts = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
+exports.getProductsByTime = async (req, res) => {
+  try {
+    const data = await Product.aggregate([
+      {
+        $sort: { updatedAt: -1 },
+      },
+      {
+        $limit: 4,
+      },
+    ]);
+    res.json(data);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
 exports.getProductsById = async (req, res) => {
   try {
     const data = await Product.findById(req.params.id);

@@ -1,5 +1,30 @@
-import { Link } from "react-router-dom";
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
 function Login() {
+  const navigate = useNavigate();
+  const [input, setInput] = useState({ user: "", password: "" });
+  const [msg, setMsg] = useState("");
+  const handleinput = (e) => {
+    const { name, value } = e.target;
+    setInput((values) => ({ ...values, [name]: value }));
+  };
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setMsg("");
+    try {
+      await axios.post("http://localhost:5000/api/user/login", input, {
+        withCredentials: true,
+      });
+      navigate("/");
+    } catch (err) {
+      const backendError =
+        err.response?.data?.message ||
+        err.response?.data ||
+        "Something went wrong.";
+      setMsg(backendError);
+    }
+  };
   return (
     <div className="container-fluid min-vh-100 d-flex align-items-center justify-content-center bg-light">
       <div
@@ -19,14 +44,17 @@ function Login() {
         {/* LOGIN FORM */}
         <div className="col-12 col-md-6 p-5">
           <h2 className="text-center mb-4 fw-bold">Login</h2>
-
-          <form>
+          <form onSubmit={handleSubmit}>
             <div className="mb-3">
-              <label className="form-label">Enter Mobile Number</label>
+              <label className="form-label">Enter Email Id</label>
               <input
-                type="text"
+                type="email"
                 className="form-control"
-                placeholder="Enter Mobile Number"
+                placeholder="Enter Email Id"
+                name="user"
+                value={input.user}
+                onChange={handleinput}
+                required
               />
             </div>
 
@@ -36,9 +64,15 @@ function Login() {
                 type="password"
                 className="form-control"
                 placeholder="Enter password"
+                name="password"
+                value={input.password}
+                onChange={handleinput}
+                required
               />
             </div>
-
+            <div className="m-3">
+              <span className="text-danger">{msg}</span>
+            </div>
             <button className="btn btn-dark w-100">Login</button>
           </form>
 
