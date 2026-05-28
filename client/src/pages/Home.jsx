@@ -19,7 +19,7 @@ function Home() {
         const res = await axios.get("/data.json");
         setData(res.data);
         const response = await axios.get(
-          "http://localhost:5000/api/products/time",
+          `${import.meta.env.VITE_API_URL}/api/products/time`,
         );
         setProduct(response.data);
       } catch (err) {
