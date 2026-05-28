@@ -22,6 +22,7 @@ app.use(
       "http://localhost:5173",
       "http://localhost:5174",
       "https://dev-ranjani.vercel.app",
+      "https://shopysite.vercel.app/",
     ],
     credentials: true,
   }),
