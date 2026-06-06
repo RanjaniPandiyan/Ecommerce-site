@@ -35,7 +35,7 @@ function ViewProduct() {
         <div className="card-body">
           <h1 className="card-title mb-4">View Products</h1>
           <div className="card">
-            <div className="card-body">
+            <div className="card-body table-responsive ">
               <table className="table text-nowrap mb-0 align-middle">
                 <thead className="text-dark fs-4">
                   <tr>
