@@ -9,7 +9,7 @@ const productRoutes = require("./routes/productRoutes");
 const adminRoutes = require("./routes/adminRoutes");
 const userRoutes = require("./routes/userRoutes");
 const app = express();
-
+app.set("trust proxy", 1);
 // connect DB
 connectDB();
 
