@@ -1,6 +1,9 @@
 const Product = require("../models/Product");
 exports.createProduct = async (req, res) => {
   try {
+    console.log("BODY:", req.body);
+    console.log("FILE:", req.file);
+
     if (!req.file) {
       return res.status(400).json({ error: "Image required" });
     }

@@ -47,7 +47,9 @@ function Products() {
 
       const toast = new window.bootstrap.Toast(toastRef.current);
       toast.show();
-
+      setTimeout(() => {
+        navigate("/products");
+      }, 1500);
       setInput({
         category: "",
         name: "",
@@ -59,7 +61,6 @@ function Products() {
       if (fileInputRef.current) {
         fileInputRef.current.value = "";
       }
-      setTimeout(navigate("/products"), 1500);
     } catch (err) {
       console.log(err);
     }
