@@ -50,3 +50,16 @@ body {
 .icon-img:hover i {
   color: red;
 }
+
+.btn-primary-more {
+  background-color: #ff7bc3;
+  border-radius: 20px;
+  color: white;
+}
+
+.btn-primary-more:hover {
+  background-color: white;
+  border-radius: 20px;
+  border-color: #ff7bc3;
+  color: #ff7bc3;
+}

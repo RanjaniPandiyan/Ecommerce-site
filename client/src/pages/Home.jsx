@@ -7,7 +7,7 @@ import banner3 from "/images/toysbanner.png";
 import banner4 from "/images/womenbanner.png";
 import banner5 from "/images/travelbanner.png";
 import ExploreProducts from "../components/ExploreProducts";
-// import { Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 function Home() {
   const banners = [banner1, banner2, banner3, banner4, banner5];
   const [data, setData] = useState([]);
@@ -109,19 +109,20 @@ function Home() {
         {products.map((items) => (
           <ExploreProducts
             id={items._id}
-            images={
-              items.image?.url
-                ? items.image.url.replace("http://", "https://")
-                : ""
-            }
+            images={items.image?.url}
             name={items.name}
             price={items.price}
             key={items._id}
           />
         ))}
       </div>
+      <div className="m-4 d-flex justify-content-center">
+        <Link to="/" className="btn btn-primary-more">
+          Explore More
+        </Link>
+      </div>
       {/* Promo Banners */}
-      <div className="mt-2 p-3">
+      <div className="mt-5 p-3">
         <h3 className="text-dark text-center" style={{ fontFamily: "georgia" }}>
           Category
         </h3>
@@ -130,11 +131,7 @@ function Home() {
         {products.map((items) => (
           <ExploreProducts
             id={items._id}
-            images={
-              items.image?.url
-                ? items.image.url.replace("http://", "https://")
-                : ""
-            }
+            images={items.image?.url}
             name={items.name}
             price={items.price}
             key={items._id}

@@ -1,6 +1,14 @@
 import { Link } from "react-router-dom";
 
 function Navbar({ toggleSidebar }) {
+  const closeNavbar = () => {
+    const navbar = document.getElementById("navbarNav");
+    const bsCollapse = window.bootstrap.Collapse.getInstance(navbar);
+
+    if (bsCollapse) {
+      bsCollapse.hide();
+    }
+  };
   return (
     <aside className="left-sidebar">
       <div>
@@ -34,6 +42,7 @@ function Navbar({ toggleSidebar }) {
                 className="sidebar-link primary-hover-bg"
                 to="/"
                 aria-expanded="false"
+                onClick={closeNavbar}
               >
                 <iconify-icon icon="solar:atom-line-duotone"></iconify-icon>
                 <span className="hide-menu">Dashboard</span>
@@ -44,6 +53,7 @@ function Navbar({ toggleSidebar }) {
                 className="sidebar-link primary-hover-bg"
                 to="/category"
                 aria-expanded="false"
+                onClick={closeNavbar}
               >
                 <iconify-icon icon="icon-park-outline:shopping"></iconify-icon>
                 <span className="hide-menu">Category</span>
@@ -54,6 +64,7 @@ function Navbar({ toggleSidebar }) {
                 className="sidebar-link primary-hover-bg"
                 to="/products"
                 aria-expanded="false"
+                onClick={closeNavbar}
               >
                 <iconify-icon icon="material-symbols:library-add-outline"></iconify-icon>
                 <span className="hide-menu">Add Products</span>
@@ -64,6 +75,7 @@ function Navbar({ toggleSidebar }) {
                 className="sidebar-link primary-hover-bg"
                 to="/vproduct"
                 aria-expanded="false"
+                onClick={closeNavbar}
               >
                 <iconify-icon icon="material-symbols:view-cozy-outline-sharp"></iconify-icon>
 

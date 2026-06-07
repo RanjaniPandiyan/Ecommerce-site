@@ -7,12 +7,13 @@ exports.createProduct = async (req, res) => {
     if (!req.file) {
       return res.status(400).json({ error: "Image required" });
     }
+    const protocol = req.protocol;
     const host = req.get("host");
     const newProduct = new Product({
       ...req.body,
       price: Number(req.body.price),
       image: {
-        url: `https://${host}/uploads/${req.file.filename}`,
+        url: `${protocol}://${host}/uploads/${req.file.filename}`,
         public_id: req.file.filename,
       },
     });
