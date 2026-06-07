@@ -1,24 +1,31 @@
 const Product = require("../models/Product");
+const imagekit = require("../config/imagekit");
+const fs = require("fs");
+
 exports.createProduct = async (req, res) => {
   try {
-    console.log("BODY:", req.body);
-    console.log("FILE:", req.file);
-
     if (!req.file) {
       return res.status(400).json({ error: "Image required" });
     }
-    const protocol = req.protocol;
-    const host = req.get("host");
+
+    const result = await imagekit.upload({
+      file: fs.readFileSync(req.file.path),
+      fileName: req.file.filename,
+      folder: "/products",
+    });
+
     const newProduct = new Product({
       ...req.body,
       price: Number(req.body.price),
       image: {
-        url: `${protocol}://${host}/uploads/${req.file.filename}`,
-        public_id: req.file.filename,
+        url: result.url,
+        public_id: result.fileId,
       },
     });
 
     await newProduct.save();
+
+    fs.unlinkSync(req.file.path);
 
     res.status(201).json(newProduct);
   } catch (err) {
