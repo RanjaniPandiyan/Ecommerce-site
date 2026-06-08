@@ -31,6 +31,10 @@ exports.createProduct = async (req, res) => {
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: err.message });
+  } finally {
+    if (req.file && fs.existsSync(req.file.path)) {
+      fs.unlinkSync(req.file.path);
+    }
   }
 };
 exports.getProducts = async (req, res) => {
@@ -43,14 +47,8 @@ exports.getProducts = async (req, res) => {
 };
 exports.getProductsByTime = async (req, res) => {
   try {
-    const data = await Product.aggregate([
-      {
-        $sort: { updatedAt: -1 },
-      },
-      {
-        $limit: 4,
-      },
-    ]);
+    const data = await Product.find().sort({ updatedAt: -1 }).limit(8);
+
     res.json(data);
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -79,7 +77,16 @@ exports.updateProducts = async (req, res) => {
 
 exports.deleteProduct = async (req, res) => {
   try {
+    const product = await Product.findById(req.params.id);
+
+    if (!product) {
+      return res.status(404).json({ error: "Product not found" });
+    }
+
+    await imagekit.deleteFile(product.image.public_id);
+
     await Product.findByIdAndDelete(req.params.id);
+
     res.json({ message: "Deleted successfully" });
   } catch (err) {
     res.status(500).json({ error: err.message });

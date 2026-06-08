@@ -22,6 +22,7 @@ function Home() {
           `${import.meta.env.VITE_API_URL}/api/products/time`,
         );
         setProduct(response.data);
+        console.log("Products count:", response.data.length);
       } catch (err) {
         console.log(err);
       }

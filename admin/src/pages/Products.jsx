@@ -120,7 +120,7 @@ function Products() {
                         Price
                       </label>
                       <input
-                        type="text"
+                        type="number"
                         className="form-control"
                         id="price"
                         name="price"

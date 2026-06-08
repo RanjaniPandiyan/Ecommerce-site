@@ -6,7 +6,7 @@ function ExploreProducts({ images, name, price }) {
       <div className="card hover-shadow h-100">
         <img
           src={images}
-          className="card-img-top p-3 w-100"
+          className="card-img-top p-2 w-100"
           alt={name}
           style={{
             height: "250px",
@@ -14,13 +14,13 @@ function ExploreProducts({ images, name, price }) {
           }}
         />
 
-        <div className="card-body">
+        <div className="card-body m-0">
           <h6 className="card-title">{name}</h6>
 
           <p className="card-text text-center">₹{price}</p>
 
           <Link to="/" className="btn btn-primary w-100">
-            <i class="fa fa-shopping-cart" aria-hidden="true"></i> Cart
+            <i className="fa fa-shopping-cart" aria-hidden="true"></i> Cart
           </Link>
         </div>
       </div>
