@@ -87,6 +87,10 @@ CLOUDINARY_CLOUD_NAME=your_cloud_name
 * Backend → Render
 * Database → MongoDB Atlas
 
+## Live Demo
+
+userName : admin
+password : admin123
 ## Author
 
 Ranjani Pandiyan
