@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import brand from "/images/brand.png";
 function Navbar() {
   return (
-    <nav className="navbar navbar-expand-lg navbar-light bg-light sticky-top">
+    <nav className="navbar navbar-expand-lg navbar-light sticky-top">
       <div className="container-fluid">
         <Link className="navbar-brand" to="/">
           <img src={brand} alt="brand" style={{ width: 50, height: 50 }}></img>

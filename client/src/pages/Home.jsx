@@ -1,34 +1,42 @@
 import { useEffect, useState } from "react";
-// import { Link } from "react-router-dom";
 import axios from "axios";
+import { Link } from "react-router-dom";
 import banner1 from "/images/kidsbanner.png";
 import banner2 from "/images/menbanner.png";
 import banner3 from "/images/toysbanner.png";
 import banner4 from "/images/womenbanner.png";
 import banner5 from "/images/travelbanner.png";
 import ExploreProducts from "../components/ExploreProducts";
-import { Link } from "react-router-dom";
+
 function Home() {
   const banners = [banner1, banner2, banner3, banner4, banner5];
   const [data, setData] = useState([]);
   const [products, setProduct] = useState([]);
-  //axios
+  const [arrivals, setArrivals] = useState([]);
+  const [likedItems, setLikedItems] = useState({});
+
   useEffect(() => {
     const fetchdata = async () => {
       try {
         const res = await axios.get("/data.json");
         setData(res.data);
+
         const response = await axios.get(
           `${import.meta.env.VITE_API_URL}/api/products/time`,
         );
         setProduct(response.data);
-        console.log("Products count:", response.data.length);
+
+        const responses = await axios.get(
+          `${import.meta.env.VITE_API_URL}/api/products`,
+        );
+        setArrivals(responses.data);
       } catch (err) {
-        console.log(err);
+        console.error("Error fetching homepage data:", err);
       }
     };
     fetchdata();
   }, []);
+
   const categories = [
     { key: "men", label: "Mens" },
     { key: "kids", label: "Kids" },
@@ -36,8 +44,9 @@ function Home() {
     { key: "travel", label: "Travel" },
     { key: "toys", label: "Toys" },
   ];
+
   return (
-    <div id="home">
+    <div id="home" className="w-100 overflow-hidden">
       {/* Banners */}
       <div
         id="carouselExampleControls"
@@ -54,9 +63,8 @@ function Home() {
               <img
                 src={img}
                 className="d-block w-100 object-fit-cover"
-                style={{ height: 200, backgroundSize: "cover" }}
-                alt="..."
-                key={index}
+                style={{ height: 200 }}
+                alt="Banner Image"
               />
             </div>
           ))}
@@ -86,58 +94,114 @@ function Home() {
           <span className="visually-hidden">Next</span>
         </button>
       </div>
-      {/* Quick Links */}
-      <div className="row row-cols-md-5 row-cols-sm-5 g-0 d-flex justify-content-center p-4">
-        {categories.map((cat) => (
-          <div className="col text-center" key={cat.key}>
-            <img
-              src={data ? data[cat.key] : ""}
-              className="rounded-circle object-fit-cover"
-              style={{ width: 100, height: 100 }}
-            />
 
-            <h6 className="text-dark mt-2">{cat.label}</h6>
-          </div>
-        ))}
+      {/* FIXED: Quick Links are now wrapped safely in a container */}
+      <div className="container py-4">
+        <div className="row row-cols-5 g-2 justify-content-center">
+          {categories.map((cat) => (
+            <div className="col text-center" key={cat.key}>
+              <img
+                src={data ? data[cat.key] : ""}
+                className="rounded-circle object-fit-cover img-fluid"
+                style={{ width: 100, height: 100 }}
+                alt={cat.label}
+              />
+              <h6 className="text-dark mt-2 small text-truncate">
+                {cat.label}
+              </h6>
+            </div>
+          ))}
+        </div>
       </div>
-      {/* New arrivals */}
+
+      {/* New arrivals Header */}
       <div className="mt-2 p-3">
         <h3 className="text-dark text-center" style={{ fontFamily: "georgia" }}>
           New Arrivals
         </h3>
       </div>
-      <div className="row row-cols-2 row-cols-sm-2 row-cols-md-5 d-flex justify-content-center g-3">
-        {products.map((items) => (
-          <ExploreProducts
-            id={items._id}
-            images={items.image?.url}
-            name={items.name}
-            price={items.price}
-            key={items._id}
-          />
-        ))}
+
+      {/* New Arrivals Grid */}
+      <div className="container">
+        <div className="row row-cols-2 row-cols-sm-2 row-cols-md-5 d-flex justify-content-center g-3">
+          {products.slice(0, 4).map((items) => (
+            <ExploreProducts
+              id={items._id}
+              images={items.image?.url}
+              name={items.name}
+              price={items.price}
+              key={items._id}
+              liked={!!likedItems[items._id]}
+              toggleLike={() =>
+                setLikedItems((prev) => ({
+                  ...prev,
+                  [items._id]: !prev[items._id],
+                }))
+              }
+            />
+          ))}
+        </div>
       </div>
-      <div className="m-4 d-flex justify-content-center">
-        <Link to="/" className="btn btn-primary-more">
-          Explore More
-        </Link>
+
+      {/* Trust Badges */}
+      <div className="container trust mt-5">
+        <div className="row g-3">
+          {[
+            { icon: "fa-truck", text: "Free Delivery" },
+            { icon: "fa-credit-card-alt", text: "100% Secure Payments" },
+            { icon: "fa-paper-plane", text: "Easy Returns" },
+            { icon: "fa-hourglass", text: "24/7 Support" },
+          ].map((item, index) => (
+            <div className="col-6 col-lg-3" key={index}>
+              <div className="border-0 text-center p-3 h-100">
+                <i className={`fa ${item.icon} fs-2 mb-2`}></i>
+                <h6 className="mb-0">{item.text}</h6>
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
-      {/* Promo Banners */}
-      <div className="mt-5 p-3">
-        <h3 className="text-dark text-center" style={{ fontFamily: "georgia" }}>
-          Category
-        </h3>
-      </div>
-      <div className="row row-cols-2 row-cols-sm-2 row-cols-md-5 d-flex justify-content-center g-3">
-        {products.map((items) => (
-          <ExploreProducts
-            id={items._id}
-            images={items.image?.url}
-            name={items.name}
-            price={items.price}
-            key={items._id}
-          />
-        ))}
+
+      {/* You May Also Like Header */}
+      <div className="container mt-5">
+        <div className="p-3 d-flex flex-column flex-sm-row justify-content-between align-items-center">
+          <h3
+            className="text-dark mb-2 mb-sm-0"
+            style={{ fontFamily: "georgia" }}
+          >
+            You May Also Like
+          </h3>
+          <Link
+            to="/"
+            className="btn text-dark"
+            style={{ backgroundColor: "#ece9ff" }}
+          >
+            <b>
+              View More{" "}
+              <i className="fa fa-arrow-circle-right" aria-hidden="true"></i>
+            </b>
+          </Link>
+        </div>
+
+        {/* You May Also Like Grid */}
+        <div className="row row-cols-2 row-cols-sm-2 row-cols-md-5 d-flex justify-content-center g-3 mb-5">
+          {arrivals.slice(0, 10).map((items) => (
+            <ExploreProducts
+              id={items._id}
+              images={items.image?.url}
+              name={items.name}
+              price={items.price}
+              key={items._id}
+              liked={!!likedItems[items._id]}
+              toggleLike={() =>
+                setLikedItems((prev) => ({
+                  ...prev,
+                  [items._id]: !prev[items._id],
+                }))
+              }
+            />
+          ))}
+        </div>
       </div>
     </div>
   );

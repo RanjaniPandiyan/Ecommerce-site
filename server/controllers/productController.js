@@ -47,7 +47,7 @@ exports.getProducts = async (req, res) => {
 };
 exports.getProductsByTime = async (req, res) => {
   try {
-    const data = await Product.find().sort({ updatedAt: -1 }).limit(8);
+    const data = await Product.find().sort({ updatedAt: -1 });
 
     res.json(data);
   } catch (err) {
