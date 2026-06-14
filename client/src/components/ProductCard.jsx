@@ -1,26 +1,57 @@
 import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { addToCart } from "../redux/cartSlice";
+import { addToWishlist, removeWishlist } from "../redux/wishlistSlice";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import ExploreProducts from "./ExploreProducts";
 
 function ProductCard({ ids, images, name, price, desc, liked, toggleLike }) {
+  const dispatch = useDispatch();
+  const product = {
+    ids,
+    images,
+    name,
+    price,
+  };
+  const [count, setCount] = useState(0);
+  const [arrivals, setArrivals] = useState([]);
+  const [likedItems, setLikedItems] = useState({});
+  useEffect(() => {
+    const fetchdata = async () => {
+      try {
+        const responses = await axios.get(
+          `${import.meta.env.VITE_API_URL}/api/products`,
+        );
+        setArrivals(responses.data);
+      } catch (err) {
+        console.error("Error fetching homepage data:", err);
+      }
+    };
+    fetchdata();
+  }, []);
+
   return (
     <>
       <div className="card mb-3 overflow-hidden">
         <div className="row g-0 h-100">
           <div className="col-md-5">
-            <div
-              className="img-wrapper"
-              style={{ position: "relative", height: "500px" }}
-            >
+            <div className="img-wrapper" style={{ position: "relative" }}>
               <img
                 src={images}
-                className="img-fluid rounded-start w-100 h-100 object-fit-cover"
+                className="object-fit-contain border rounded"
                 alt={name}
-                style={{ display: "block" }}
               />
 
               <div
                 className="icon-img"
                 onClick={(e) => {
                   e.stopPropagation();
+                  if (!liked) {
+                    dispatch(addToWishlist(product));
+                  } else {
+                    dispatch(removeWishlist(ids));
+                  }
                   toggleLike();
                 }}
                 style={{ cursor: "pointer" }}
@@ -35,29 +66,126 @@ function ProductCard({ ids, images, name, price, desc, liked, toggleLike }) {
           </div>
           <div className="col-md-7 ">
             <div className="card-body">
-              <h4 className="card-title fs-3">
+              <nav aria-label="breadcrumb">
+                <ol className="breadcrumb">
+                  <li className="breadcrumb-item">
+                    <Link
+                      to="/"
+                      className="text-info"
+                      style={{ textDecoration: "none" }}
+                    >
+                      Home
+                    </Link>
+                  </li>
+                  <li className="breadcrumb-item active" aria-current="page">
+                    Product
+                  </li>
+                </ol>
+              </nav>
+              <h4 className="card-title fw-bolder">
                 {name ? name.toUpperCase() : ""}
               </h4>
-              <h5 className="card-text  my-3">₹{price}</h5>
-              <p className="card-text ">{desc}</p>
 
+              <h5 className="card-text text-warning my-3">
+                <b>₹{price}</b>
+              </h5>
+              <div className="text-dark">
+                <h5 className="mt-2 ">Quantity:</h5>
+              </div>
               <div className="row d-flex justify-content-around">
                 <div className="col">
-                  <Link to={ids} className="btn btn-primary w-100 py-2">
+                  <div className=" w-100 py-2 d-flex justify-content-around">
+                    <button className="btn" onClick={() => setCount(count + 1)}>
+                      <i
+                        className="fa fa-plus text-muted"
+                        aria-hidden="true"
+                      ></i>
+                    </button>
+                    <span className="text-dark fs-5">{count}</span>
+                    <button
+                      className="btn"
+                      onClick={() =>
+                        setCount((prev) => (prev === 0 ? 0 : count - 1))
+                      }
+                    >
+                      <i
+                        className="fa fa-minus text-muted"
+                        aria-hidden="true"
+                      ></i>
+                    </button>
+                  </div>
+                </div>
+                <div className="col">
+                  <button
+                    className="btn btn-primary w-100 py-2 rounded-pill"
+                    onClick={() => dispatch(addToCart(product))}
+                  >
                     <i className="fa fa-shopping-cart" aria-hidden="true"></i>{" "}
                     Add to Cart
-                  </Link>
+                  </button>
                 </div>
 
                 <div className="col">
-                  <Link to={ids} className="btn btn-warning w-100 py-2">
-                    <i class="fa fa-shopping-basket" aria-hidden="true"></i> Buy
-                    Now
+                  <Link
+                    to={`/order/${ids}`}
+                    className="btn btn-warning w-100 py-2 rounded-pill"
+                  >
+                    <i className="fa fa-shopping-basket" aria-hidden="true"></i>{" "}
+                    Buy Now
                   </Link>
                 </div>
               </div>
+              <div ClassName="text-dark ">
+                <h5 className="mt-5">Description:</h5>
+
+                <p
+                  className="card-text"
+                  style={{ fontFamily: "georgia", lineHeight: 2 }}
+                >
+                  {desc}
+                </p>
+              </div>
             </div>
           </div>
+        </div>
+      </div>
+      <div className="container mt-5">
+        <div className="p-3 d-flex flex-column flex-sm-row justify-content-between align-items-center">
+          <h3
+            className="text-dark mb-2 mb-sm-0"
+            style={{ fontFamily: "georgia" }}
+          >
+            You May Also Like
+          </h3>
+          <Link
+            to="/"
+            className="btn text-dark"
+            style={{ backgroundColor: "#ece9ff" }}
+          >
+            <b>
+              View More{" "}
+              <i className="fa fa-arrow-circle-right" aria-hidden="true"></i>
+            </b>
+          </Link>
+        </div>
+
+        <div className="row row-cols-2 row-cols-sm-2 row-cols-md-5 d-flex justify-content-center g-3 mb-5">
+          {arrivals.slice(0, 5).map((items) => (
+            <ExploreProducts
+              id={items._id}
+              images={items.image?.url}
+              name={items.name}
+              price={items.price}
+              key={items._id}
+              liked={!!likedItems[items._id]}
+              toggleLike={() =>
+                setLikedItems((prev) => ({
+                  ...prev,
+                  [items._id]: !prev[items._id],
+                }))
+              }
+            />
+          ))}
         </div>
       </div>
     </>

@@ -1,8 +1,11 @@
+import { Link, useParams } from "react-router-dom";
+
 function Order() {
+  const { ids } = useParams();
   return (
     <>
       {" "}
-      <div className="container-fluid min-vh-100 d-flex align-items-center justify-content-center bg-light">
+      <div className="container-fluid m-3 d-flex  justify-content-center ">
         <div
           className="row shadow-lg rounded-4 overflow-hidden bg-white"
           style={{ maxWidth: "1000px", width: "100%" }}
@@ -60,7 +63,12 @@ function Order() {
               </div>
               <div className=" d-flex justify-content-end">
                 {" "}
-                <button className="btn btn-warning w-50">Save</button>
+                <Link
+                  to={`/placeorder/${ids}`}
+                  className="btn btn-warning w-50"
+                >
+                  Save
+                </Link>
               </div>
             </form>
           </div>

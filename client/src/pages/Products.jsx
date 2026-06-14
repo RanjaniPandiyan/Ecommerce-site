@@ -22,11 +22,10 @@ function Products() {
     if (id) getProduct();
   }, [id]);
 
-  // Handle loading state gracefully while API resolves
   if (!product) {
     return (
       <div className="container text-center mt-5">
-        <div className="spinner-border text-primary" role="status">
+        <div className="spinner-grow text-primary" role="status">
           <span className="visually-hidden">Loading...</span>
         </div>
       </div>

@@ -96,7 +96,7 @@ function Home() {
       </div>
 
       {/* FIXED: Quick Links are now wrapped safely in a container */}
-      <div className="container py-4">
+      <div className="container mt-3">
         <div className="row row-cols-5 g-2 justify-content-center">
           {categories.map((cat) => (
             <div className="col text-center" key={cat.key}>

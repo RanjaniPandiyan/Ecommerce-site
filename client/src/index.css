@@ -10,7 +10,7 @@ body {
   padding: 0 !important;
   width: 100%;
   max-width: 100%;
-  overflow-x: hidden;
+  overflow-x: hidden !important;
   font-family: sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -19,13 +19,31 @@ body {
 .navbar {
   background: linear-gradient(135deg, #f8f7ff, #ece9ff);
   height: auto;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+}
+.nav-item i {
+  transition: all 0.3s ease;
+  cursor: pointer;
 }
 
+.nav-item i:hover {
+  color: #0d6efd;
+  transform: scale(1.1);
+}
 .nav-item {
   font-size: 20px;
   padding-right: 40px;
 }
+@media (max-width: 991px) {
+  .d-lg-none {
+    margin-left: 10px;
+    margin-right: auto;
+  }
 
+  .navbar-toggler {
+    margin-left: 0;
+  }
+}
 .hover-shadow {
   transition:
     transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1),

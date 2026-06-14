@@ -24,7 +24,7 @@ function Layout() {
       <Header toggleSidebar={toggleSidebar}></Header>
       <div className="body-wrapper pt-2">
         <div className="body-wrapper-inner">
-          <div className="container-fluid">
+          <div className="-fluid">
             <Outlet></Outlet>
           </div>
         </div>

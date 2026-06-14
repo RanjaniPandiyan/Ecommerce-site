@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 function Footer() {
   return (
     <footer className="footer py-4 mt-auto bg-light border-top">
-      <div className="container text-center text-md-start">
+      <div className="text-center text-md-start">
         {" "}
         {/* Center text on mobile */}
         <h4 className="text-gray mb-3">About Us</h4>

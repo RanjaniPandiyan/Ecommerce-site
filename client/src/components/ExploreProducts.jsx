@@ -1,6 +1,16 @@
 import { Link } from "react-router-dom";
-
+import { useDispatch } from "react-redux";
+import { addToCart } from "../redux/cartSlice";
+import { addToWishlist } from "../redux/wishlistSlice";
+import { removeWishlist } from "../redux/wishlistSlice";
 function ExploreProducts({ id, images, name, price, liked, toggleLike }) {
+  const dispatch = useDispatch();
+  const product = {
+    id,
+    images,
+    name,
+    price,
+  };
   return (
     <div className="col">
       <div className="card hover-shadow h-100" data-aos="fade-up">
@@ -18,6 +28,11 @@ function ExploreProducts({ id, images, name, price, liked, toggleLike }) {
             className="icon-img"
             onClick={(e) => {
               e.stopPropagation();
+              if (!liked) {
+                dispatch(addToWishlist(product));
+              } else {
+                dispatch(removeWishlist(id));
+              }
               toggleLike();
             }}
             style={{ cursor: "pointer" }}
@@ -37,11 +52,13 @@ function ExploreProducts({ id, images, name, price, liked, toggleLike }) {
             <h6 className="card-title">{name}</h6>
             <p className="card-text">₹{price}</p>
           </Link>
-
-          <Link to="/" className="btn btn-primary w-100">
-            <i className="fa fa-shopping-cart" aria-hidden="true"></i> Cart
-          </Link>
         </div>
+        <button
+          onClick={() => dispatch(addToCart(product))}
+          className="btn btn-primary w-70 m-3 rounded-pill"
+        >
+          <i className="fa fa-shopping-cart" aria-hidden="true"></i> Cart
+        </button>
       </div>
     </div>
   );
