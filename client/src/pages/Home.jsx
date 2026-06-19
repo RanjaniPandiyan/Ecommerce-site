@@ -10,10 +10,11 @@ import ExploreProducts from "../components/ExploreProducts";
 
 function Home() {
   const banners = [banner1, banner2, banner3, banner4, banner5];
-  const [data, setData] = useState([]);
+
+  // FIX: data initialized to null for safe object checking
+  const [data, setData] = useState(null);
   const [products, setProduct] = useState([]);
   const [arrivals, setArrivals] = useState([]);
-  const [likedItems, setLikedItems] = useState({});
 
   useEffect(() => {
     const fetchdata = async () => {
@@ -29,13 +30,27 @@ function Home() {
         const responses = await axios.get(
           `${import.meta.env.VITE_API_URL}/api/products`,
         );
-        setArrivals(responses.data);
+        const shuffle = [...responses.data]
+          .sort(() => 0.5 - Math.random())
+          .slice(0, 10);
+        setArrivals(shuffle);
       } catch (err) {
         console.error("Error fetching homepage data:", err);
       }
     };
     fetchdata();
   }, []);
+
+  // FIX: Displays spinner while products array waits to be loaded from the API
+  if (products.length === 0) {
+    return (
+      <div className="container text-center mt-5">
+        <div className="spinner-grow text-primary" role="status">
+          <span className="visually-hidden">Loading...</span>
+        </div>
+      </div>
+    );
+  }
 
   const categories = [
     { key: "men", label: "Mens" },
@@ -74,6 +89,7 @@ function Home() {
           type="button"
           data-bs-target="#carouselExampleControls"
           data-bs-slide="prev"
+          aria-label="Previous"
         >
           <span
             className="carousel-control-prev-icon"
@@ -86,6 +102,7 @@ function Home() {
           type="button"
           data-bs-target="#carouselExampleControls"
           data-bs-slide="next"
+          aria-label="Next"
         >
           <span
             className="carousel-control-next-icon"
@@ -95,7 +112,7 @@ function Home() {
         </button>
       </div>
 
-      {/* FIXED: Quick Links are now wrapped safely in a container */}
+      {/* Quick Links Categories */}
       <div className="container mt-3">
         <div className="row row-cols-5 g-2 justify-content-center">
           {categories.map((cat) => (
@@ -114,7 +131,7 @@ function Home() {
         </div>
       </div>
 
-      {/* New arrivals Header */}
+      {/* New Arrivals Header */}
       <div className="mt-2 p-3">
         <h3 className="text-dark text-center" style={{ fontFamily: "georgia" }}>
           New Arrivals
@@ -124,20 +141,14 @@ function Home() {
       {/* New Arrivals Grid */}
       <div className="container">
         <div className="row row-cols-2 row-cols-sm-2 row-cols-md-5 d-flex justify-content-center g-3">
-          {products.slice(0, 4).map((items) => (
+          {/* FIX: renamed variable 'items' to singular 'item' */}
+          {products.slice(0, 4).map((item) => (
             <ExploreProducts
-              id={items._id}
-              images={items.image?.url}
-              name={items.name}
-              price={items.price}
-              key={items._id}
-              liked={!!likedItems[items._id]}
-              toggleLike={() =>
-                setLikedItems((prev) => ({
-                  ...prev,
-                  [items._id]: !prev[items._id],
-                }))
-              }
+              id={item._id}
+              images={item.image?.url}
+              name={item.name}
+              price={item.price}
+              key={item._id}
             />
           ))}
         </div>
@@ -172,7 +183,7 @@ function Home() {
             You May Also Like
           </h3>
           <Link
-            to="/"
+            to="/category"
             className="btn text-dark"
             style={{ backgroundColor: "#ece9ff" }}
           >
@@ -185,20 +196,13 @@ function Home() {
 
         {/* You May Also Like Grid */}
         <div className="row row-cols-2 row-cols-sm-2 row-cols-md-5 d-flex justify-content-center g-3 mb-5">
-          {arrivals.slice(0, 10).map((items) => (
+          {arrivals.map((item) => (
             <ExploreProducts
-              id={items._id}
-              images={items.image?.url}
-              name={items.name}
-              price={items.price}
-              key={items._id}
-              liked={!!likedItems[items._id]}
-              toggleLike={() =>
-                setLikedItems((prev) => ({
-                  ...prev,
-                  [items._id]: !prev[items._id],
-                }))
-              }
+              id={item._id}
+              images={item.image?.url}
+              name={item.name}
+              price={item.price}
+              key={item._id}
             />
           ))}
         </div>

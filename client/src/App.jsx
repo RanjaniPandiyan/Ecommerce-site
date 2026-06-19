@@ -8,9 +8,9 @@ import AOS from "aos";
 import "aos/dist/aos.css";
 import { useEffect } from "react";
 import Order from "./pages/Order";
-import PlaceOrder from "./pages/PlaceOrder";
 import Confirm from "./components/Confirm";
-
+import Category from "./pages/Category";
+import ProtectedRoutes from "./components/ProtectedRoutes";
 function App() {
   useEffect(() => {
     AOS.init({
@@ -23,12 +23,19 @@ function App() {
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route index element={<Home />} />
-          <Route path="/products/:id" element={<Products />} />
+          <Route
+            path="/products/:id"
+            element={
+              <ProtectedRoutes>
+                <Products />
+              </ProtectedRoutes>
+            }
+          />
           <Route path="/login" element={<Login />} />
           <Route path="/order/:id" element={<Order />} />
-          <Route path="/placeorder/:id" element={<PlaceOrder />} />
           <Route path="/register" element={<Register />} />
           <Route path="/confirm/:id" element={<Confirm />} />
+          <Route path="/category" element={<Category />}></Route>
         </Route>
       </Routes>
     </>

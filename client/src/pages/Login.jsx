@@ -1,8 +1,11 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import { useDispatch } from "react-redux";
+import { login } from "../redux/authSlice";
 function Login() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [input, setInput] = useState({ user: "", password: "" });
   const [msg, setMsg] = useState("");
   const handleinput = (e) => {
@@ -13,9 +16,14 @@ function Login() {
     e.preventDefault();
     setMsg("");
     try {
-      await axios.post("http://localhost:5000/api/user/login", input, {
-        withCredentials: true,
-      });
+      const response = await axios.post(
+        "http://localhost:5000/api/user/login",
+        input,
+        {
+          withCredentials: true,
+        },
+      );
+      dispatch(login({ user: response.data.user }));
       navigate("/");
     } catch (err) {
       const backendError =

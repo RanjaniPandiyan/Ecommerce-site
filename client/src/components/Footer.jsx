@@ -20,15 +20,7 @@ function Footer() {
           </Link>
           <span className="text-muted">|</span>
           <Link to="/men" className="text-muted text-decoration-none">
-            Mens Collection
-          </Link>
-          <span className="text-muted">|</span>
-          <Link to="/women" className="text-muted text-decoration-none">
-            Womens Collection
-          </Link>
-          <span className="text-muted">|</span>
-          <Link to="/kids" className="text-muted text-decoration-none">
-            Kids Collection
+            Collections
           </Link>
         </div>
         {/* Copyright */}

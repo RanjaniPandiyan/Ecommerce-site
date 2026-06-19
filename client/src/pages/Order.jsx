@@ -1,7 +1,7 @@
 import { Link, useParams } from "react-router-dom";
 
 function Order() {
-  const { ids } = useParams();
+  const { id } = useParams();
   return (
     <>
       {" "}
@@ -63,10 +63,7 @@ function Order() {
               </div>
               <div className=" d-flex justify-content-end">
                 {" "}
-                <Link
-                  to={`/placeorder/${ids}`}
-                  className="btn btn-warning w-50"
-                >
+                <Link to={`/placeorder/${id}`} className="btn btn-warning w-50">
                   Save
                 </Link>
               </div>

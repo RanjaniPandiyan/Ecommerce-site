@@ -20,6 +20,17 @@ function Navbar() {
             Shopy
           </b>
         </Link>
+        <button
+          className="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span className="navbar-toggler-icon"></span>
+        </button>
         <div className="d-flex align-items-center d-lg-none">
           <Link to="/login" className="text-dark me-3">
             <i className="fa fa-user-o fs-5"></i>
@@ -45,45 +56,25 @@ function Navbar() {
           </Link>
         </div>
 
-        <button
-          className="navbar-toggler"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#navbarSupportedContent"
-          aria-controls="navbarSupportedContent"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
-          <span className="navbar-toggler-icon"></span>
-        </button>
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
           <ul className="navbar-nav me-auto mb-2 mb-lg-0">
             <li className="nav-item ">
               <Link
                 className="nav-link active"
                 aria-current="page"
-                to="/products/Mens"
+                to="/"
                 style={{ fontFamily: "georgia" }}
               >
-                Men
+                Home
               </Link>
             </li>
             <li className="nav-item">
               <Link
                 className="nav-link"
-                to="/products/Womens"
+                to="/category"
                 style={{ fontFamily: "georgia" }}
               >
-                Women
-              </Link>
-            </li>
-            <li className="nav-item">
-              <Link
-                className="nav-link"
-                to="/products/Kids"
-                style={{ fontFamily: "georgia" }}
-              >
-                Kids
+                Collections
               </Link>
             </li>
             <li className="nav-item mt-2">

@@ -16,7 +16,7 @@ function Navbar({ toggleSidebar }) {
           <Link to="/" className="text-nowrap logo-img">
             <img
               src="/images/logos/Logo.png"
-              alt=""
+              alt="Logo"
               style={{ width: "200px", height: "60px" }}
             />
           </Link>
@@ -51,7 +51,7 @@ function Navbar({ toggleSidebar }) {
             <li className="sidebar-item">
               <Link
                 className="sidebar-link primary-hover-bg"
-                to="/category"
+                to="/"
                 aria-expanded="false"
                 onClick={closeNavbar}
               >

@@ -1,29 +1,35 @@
 import { Link } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { addToCart } from "../redux/cartSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { addToCart, removeCart } from "../redux/cartSlice";
 import { addToWishlist, removeWishlist } from "../redux/wishlistSlice";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import ExploreProducts from "./ExploreProducts";
 
-function ProductCard({ ids, images, name, price, desc, liked, toggleLike }) {
+function ProductCard({ id, images, name, price, desc }) {
   const dispatch = useDispatch();
+  const cartItems = useSelector((state) => state.cart.items);
+  const isInCart = cartItems.some((item) => item.id === id);
+  const likedItems = useSelector((state) => state.wishlist.items);
+  const isLiked = likedItems.some((item) => item.id === id);
   const product = {
-    ids,
+    id,
     images,
     name,
     price,
   };
   const [count, setCount] = useState(0);
   const [arrivals, setArrivals] = useState([]);
-  const [likedItems, setLikedItems] = useState({});
   useEffect(() => {
     const fetchdata = async () => {
       try {
         const responses = await axios.get(
           `${import.meta.env.VITE_API_URL}/api/products`,
         );
-        setArrivals(responses.data);
+        const shuffle = [...responses.data]
+          .sort(() => 0.5 - Math.random())
+          .slice(0, 4);
+        setArrivals(shuffle);
       } catch (err) {
         console.error("Error fetching homepage data:", err);
       }
@@ -47,18 +53,17 @@ function ProductCard({ ids, images, name, price, desc, liked, toggleLike }) {
                 className="icon-img"
                 onClick={(e) => {
                   e.stopPropagation();
-                  if (!liked) {
+                  if (!isLiked) {
                     dispatch(addToWishlist(product));
                   } else {
-                    dispatch(removeWishlist(ids));
+                    dispatch(removeWishlist(id));
                   }
-                  toggleLike();
                 }}
                 style={{ cursor: "pointer" }}
               >
                 <i
                   className={
-                    liked ? "fa fa-heart text-danger" : "fa fa-heart-o"
+                    isLiked ? "fa fa-heart text-danger" : "fa fa-heart-o"
                   }
                 ></i>
               </div>
@@ -92,8 +97,8 @@ function ProductCard({ ids, images, name, price, desc, liked, toggleLike }) {
               <div className="text-dark">
                 <h5 className="mt-2 ">Quantity:</h5>
               </div>
-              <div className="row d-flex justify-content-around">
-                <div className="col">
+              <div className="row row-cols-1 row-cols-md-2  row-cols-lg-3 d-flex justify-content-around">
+                <div className="col mt-2">
                   <div className=" w-100 py-2 d-flex justify-content-around">
                     <button className="btn" onClick={() => setCount(count + 1)}>
                       <i
@@ -115,19 +120,29 @@ function ProductCard({ ids, images, name, price, desc, liked, toggleLike }) {
                     </button>
                   </div>
                 </div>
-                <div className="col">
+                <div className="col mt-2">
                   <button
-                    className="btn btn-primary w-100 py-2 rounded-pill"
-                    onClick={() => dispatch(addToCart(product))}
+                    className={
+                      !isInCart
+                        ? "btn btn-primary w-100 py-2 rounded-pill"
+                        : "btn btn-success w-100 py-2 rounded-pill"
+                    }
+                    onClick={() => {
+                      if (!isInCart) {
+                        dispatch(addToCart(product));
+                      } else {
+                        dispatch(removeCart(id));
+                      }
+                    }}
                   >
                     <i className="fa fa-shopping-cart" aria-hidden="true"></i>{" "}
-                    Add to Cart
+                    {!isInCart ? "Add" : "Added"}
                   </button>
                 </div>
 
-                <div className="col">
+                <div className="col mt-2">
                   <Link
-                    to={`/order/${ids}`}
+                    to={`/order/${id}`}
                     className="btn btn-warning w-100 py-2 rounded-pill"
                   >
                     <i className="fa fa-shopping-basket" aria-hidden="true"></i>{" "}
@@ -170,20 +185,13 @@ function ProductCard({ ids, images, name, price, desc, liked, toggleLike }) {
         </div>
 
         <div className="row row-cols-2 row-cols-sm-2 row-cols-md-5 d-flex justify-content-center g-3 mb-5">
-          {arrivals.slice(0, 5).map((items) => (
+          {arrivals.map((items) => (
             <ExploreProducts
               id={items._id}
               images={items.image?.url}
               name={items.name}
               price={items.price}
               key={items._id}
-              liked={!!likedItems[items._id]}
-              toggleLike={() =>
-                setLikedItems((prev) => ({
-                  ...prev,
-                  [items._id]: !prev[items._id],
-                }))
-              }
             />
           ))}
         </div>

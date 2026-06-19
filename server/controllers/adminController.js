@@ -2,18 +2,6 @@ const Admin = require("../models/Admin");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
-async function createAdmin() {
-  const existing = await Admin.findOne({ name: "admin" });
-  const hash = await bcrypt.hash("admin123", 10);
-
-  await Admin.create({
-    name: "admin",
-    password: hash,
-  });
-
-  console.log("Admin created");
-}
-createAdmin();
 exports.loginAdmin = async (req, res) => {
   try {
     const { name, password } = req.body;

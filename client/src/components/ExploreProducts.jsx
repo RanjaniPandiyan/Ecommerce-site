@@ -1,10 +1,14 @@
 import { Link } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { addToCart } from "../redux/cartSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { addToCart, removeCart } from "../redux/cartSlice";
 import { addToWishlist } from "../redux/wishlistSlice";
 import { removeWishlist } from "../redux/wishlistSlice";
-function ExploreProducts({ id, images, name, price, liked, toggleLike }) {
+function ExploreProducts({ id, images, name, price }) {
   const dispatch = useDispatch();
+  const cartItem = useSelector((state) => state.cart.items);
+  const isInCart = cartItem.some((item) => item.id === id);
+  const likedItems = useSelector((state) => state.wishlist.items);
+  const isLiked = likedItems.some((item) => item.id === id);
   const product = {
     id,
     images,
@@ -28,17 +32,16 @@ function ExploreProducts({ id, images, name, price, liked, toggleLike }) {
             className="icon-img"
             onClick={(e) => {
               e.stopPropagation();
-              if (!liked) {
+              if (!isLiked) {
                 dispatch(addToWishlist(product));
               } else {
                 dispatch(removeWishlist(id));
               }
-              toggleLike();
             }}
             style={{ cursor: "pointer" }}
           >
             <i
-              className={liked ? "fa fa-heart text-danger" : "fa fa-heart-o"}
+              className={isLiked ? "fa fa-heart text-danger" : "fa fa-heart-o"}
             ></i>
           </div>
         </div>
@@ -54,10 +57,22 @@ function ExploreProducts({ id, images, name, price, liked, toggleLike }) {
           </Link>
         </div>
         <button
-          onClick={() => dispatch(addToCart(product))}
-          className="btn btn-primary w-70 m-3 rounded-pill"
+          onClick={() => {
+            if (!isInCart) {
+              dispatch(addToCart(product));
+            } else {
+              dispatch(removeCart(id));
+            }
+          }}
+          className={
+            !isInCart
+              ? "btn btn-primary w-70 m-3 rounded-pill"
+              : "btn btn-success w-70 m-3 rounded-pill"
+          }
         >
-          <i className="fa fa-shopping-cart" aria-hidden="true"></i> Cart
+          <i className="fa fa-shopping-cart me-2" aria-hidden="true"></i>
+          {""}
+          {!isInCart ? "Add" : "Added"}
         </button>
       </div>
     </div>
