@@ -8,7 +8,6 @@ A full-stack Ecommerce web application built using the MERN stack (MongoDB, Expr
 * Product Management
 * Admin Dashboard
 * Add to Cart
-* Product Search & Filter
 * Responsive Design
 * REST API Integration
 
@@ -20,6 +19,7 @@ A full-stack Ecommerce web application built using the MERN stack (MongoDB, Expr
 * Vite
 * Axios
 * React Router DOM
+* Redux Toolkit
 
 ### Backend
 
@@ -78,7 +78,7 @@ Create `.env` file inside server folder:
 ```env
 MONGO_URI=your_mongodb_url
 JWT_SECRET=your_secret
-CLOUDINARY_CLOUD_NAME=your_cloud_name
+IMAGEKIT=your_cloud_name
 ```
 
 ## Deployment
