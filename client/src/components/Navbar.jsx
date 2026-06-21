@@ -1,12 +1,16 @@
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import brand from "/images/brand.png";
-import { useSelector } from "react-redux";
-
+import { useSelector, useDispatch } from "react-redux";
+import { logout } from "../redux/authSlice";
+import { clearCart } from "../redux/cartSlice";
+import { clearWishlist } from "../redux/wishlistSlice";
 function Navbar() {
+  const dispatch = useDispatch();
   const cartItems = useSelector((state) => state.cart.items);
   const wishlist = useSelector((state) => state.wishlist.items);
+  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
   return (
-    <nav className="navbar navbar-expand-lg navbar-light sticky-top">
+    <nav className="navbar navbar-expand-lg navbar-light fixed-top">
       <div className="container-fluid">
         <Link className="navbar-brand" to="/">
           <img src={brand} alt="brand" style={{ width: 50, height: 50 }}></img>
@@ -59,26 +63,30 @@ function Navbar() {
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
           <ul className="navbar-nav me-auto mb-2 mb-lg-0">
             <li className="nav-item ">
-              <Link
-                className="nav-link active"
+              <NavLink
+                className={({ isActive }) =>
+                  `nav-link text-dark ${isActive ? "active" : ""}`
+                }
                 aria-current="page"
                 to="/"
                 style={{ fontFamily: "georgia" }}
               >
                 Home
-              </Link>
+              </NavLink>
             </li>
             <li className="nav-item">
-              <Link
-                className="nav-link"
+              <NavLink
+                className={({ isActive }) =>
+                  `nav-link text-dark ${isActive ? "active" : ""}`
+                }
                 to="/category"
                 style={{ fontFamily: "georgia" }}
               >
                 Collections
-              </Link>
+              </NavLink>
             </li>
-            <li className="nav-item mt-2">
-              <form className="d-flex">
+            {/* <li className="nav-item mt-2">
+              <Link className="d-flex">
                 <input
                   className="form-control me-2"
                   type="search"
@@ -88,22 +96,52 @@ function Navbar() {
                 <button className="btn btn-outline-success" type="submit">
                   Search
                 </button>
-              </form>
-            </li>
+              </Link>
+            </li> */}
           </ul>
 
           <ul className="navbar-nav ms-auto d-none d-lg-flex d-flex flex-row align-items-center ">
             <li className="nav-item mx-1" title="Profile">
-              <Link to="/Login">
-                <i
-                  className="fa fa-user-o fs-5"
-                  aria-hidden="true"
-                  style={{ textDecoration: "none", color: "black" }}
-                ></i>
-              </Link>
+              {!isAuthenticated ? (
+                <Link to="/login" className="text-dark position-relative">
+                  <i
+                    className="fa fa-user-o fs-5"
+                    aria-hidden="true"
+                    style={{ textDecoration: "none", color: "black" }}
+                  ></i>
+                </Link>
+              ) : (
+                <div className="dropdown show">
+                  <i
+                    className="fa fa-user-o fs-5  dropdown-toggle"
+                    aria-hidden="true"
+                    style={{ textDecoration: "none", color: "black" }}
+                    id="dropdownMenuLink"
+                    role="button"
+                    data-bs-toggle="dropdown"
+                    aria-haspopup="true"
+                    aria-expanded="false"
+                  ></i>
+                  <div
+                    className="dropdown-menu"
+                    aria-labelledby="dropdownMenuLink"
+                  >
+                    <button
+                      className=" btn btn-outline-danger dropdown-item"
+                      onClick={() => {
+                        dispatch(logout());
+                        dispatch(clearWishlist());
+                        dispatch(clearCart());
+                      }}
+                    >
+                      LOGOUT
+                    </button>
+                  </div>
+                </div>
+              )}
             </li>
             <li className="nav-item mx-1" title="Wishlist">
-              <Link to="/Login" className="text-dark position-relative">
+              <Link to="/login" className="text-dark position-relative">
                 <i className="fa fa-heart-o fs-5" aria-hidden="true"></i>
                 {wishlist.length > 0 && (
                   <span
@@ -116,7 +154,7 @@ function Navbar() {
               </Link>
             </li>
             <li className="nav-item mx-1" title="Cart">
-              <Link to="/Login" className="text-dark position-relative">
+              <Link to="/login" className="text-dark position-relative">
                 <i
                   className="fa fa-shopping-basket fs-5"
                   aria-hidden="true"

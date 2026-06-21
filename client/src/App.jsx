@@ -23,18 +23,25 @@ function App() {
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route index element={<Home />} />
+          <Route path="/products/:id" element={<Products />} />
+          <Route path="/login" element={<Login />} />
           <Route
-            path="/products/:id"
+            path="/order/:id"
             element={
               <ProtectedRoutes>
-                <Products />
+                <Order />
               </ProtectedRoutes>
             }
           />
-          <Route path="/login" element={<Login />} />
-          <Route path="/order/:id" element={<Order />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/confirm/:id" element={<Confirm />} />
+          <Route
+            path="/confirm/:id"
+            element={
+              <ProtectedRoutes>
+                <Confirm />
+              </ProtectedRoutes>
+            }
+          />
           <Route path="/category" element={<Category />}></Route>
         </Route>
       </Routes>

@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { addToCart, removeCart } from "../redux/cartSlice";
 import { addToWishlist, removeWishlist } from "../redux/wishlistSlice";
@@ -8,8 +8,10 @@ import ExploreProducts from "./ExploreProducts";
 
 function ProductCard({ id, images, name, price, desc }) {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const cartItems = useSelector((state) => state.cart.items);
   const isInCart = cartItems.some((item) => item.id === id);
+  const isAuth = useSelector((state) => state.auth.isAuthenticated);
   const likedItems = useSelector((state) => state.wishlist.items);
   const isLiked = likedItems.some((item) => item.id === id);
   const product = {
@@ -54,7 +56,11 @@ function ProductCard({ id, images, name, price, desc }) {
                 onClick={(e) => {
                   e.stopPropagation();
                   if (!isLiked) {
-                    dispatch(addToWishlist(product));
+                    if (isAuth) {
+                      dispatch(addToWishlist(product));
+                    } else {
+                      navigate("/login");
+                    }
                   } else {
                     dispatch(removeWishlist(id));
                   }
@@ -129,7 +135,11 @@ function ProductCard({ id, images, name, price, desc }) {
                     }
                     onClick={() => {
                       if (!isInCart) {
-                        dispatch(addToCart(product));
+                        if (isAuth) {
+                          dispatch(addToCart(product));
+                        } else {
+                          navigate("/login");
+                        }
                       } else {
                         dispatch(removeCart(id));
                       }

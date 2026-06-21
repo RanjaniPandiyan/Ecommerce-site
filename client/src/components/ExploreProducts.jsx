@@ -1,11 +1,13 @@
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { addToCart, removeCart } from "../redux/cartSlice";
 import { addToWishlist } from "../redux/wishlistSlice";
 import { removeWishlist } from "../redux/wishlistSlice";
 function ExploreProducts({ id, images, name, price }) {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const cartItem = useSelector((state) => state.cart.items);
+  const isAuth = useSelector((state) => state.auth.isAuthenticated);
   const isInCart = cartItem.some((item) => item.id === id);
   const likedItems = useSelector((state) => state.wishlist.items);
   const isLiked = likedItems.some((item) => item.id === id);
@@ -17,7 +19,11 @@ function ExploreProducts({ id, images, name, price }) {
   };
   return (
     <div className="col">
-      <div className="card hover-shadow h-100" data-aos="fade-up">
+      <div
+        className="card hover-shadow h-100"
+        onClick={() => navigate(`/products/${id}`)}
+        data-aos="fade-up"
+      >
         <div className="img-wrapper" style={{ position: "relative" }}>
           <img
             src={images}
@@ -33,7 +39,11 @@ function ExploreProducts({ id, images, name, price }) {
             onClick={(e) => {
               e.stopPropagation();
               if (!isLiked) {
-                dispatch(addToWishlist(product));
+                if (isAuth) {
+                  dispatch(addToWishlist(product));
+                } else {
+                  navigate("/login");
+                }
               } else {
                 dispatch(removeWishlist(id));
               }
@@ -47,19 +57,22 @@ function ExploreProducts({ id, images, name, price }) {
         </div>
 
         <div className="card-body">
-          <Link
-            to={`/products/${id}`}
-            className="text-dark"
-            style={{ textDecoration: "none" }}
-          >
-            <h6 className="card-title">{name}</h6>
+          <div className="text-dark" style={{ textDecoration: "none" }}>
+            <h6 className="card-title ">
+              <strong>{name}</strong>
+            </h6>
             <p className="card-text">₹{price}</p>
-          </Link>
+          </div>
         </div>
         <button
-          onClick={() => {
+          onClick={(e) => {
+            e.stopPropagation();
             if (!isInCart) {
-              dispatch(addToCart(product));
+              if (isAuth) {
+                dispatch(addToCart(product));
+              } else {
+                navigate("/login");
+              }
             } else {
               dispatch(removeCart(id));
             }

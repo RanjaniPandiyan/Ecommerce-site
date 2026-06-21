@@ -11,16 +11,16 @@ import ExploreProducts from "../components/ExploreProducts";
 function Home() {
   const banners = [banner1, banner2, banner3, banner4, banner5];
 
-  // FIX: data initialized to null for safe object checking
-  const [data, setData] = useState(null);
+  // // // FIX: data initialized to null for safe object checking
+  //  const [data, setData] = useState(null);
   const [products, setProduct] = useState([]);
   const [arrivals, setArrivals] = useState([]);
 
   useEffect(() => {
     const fetchdata = async () => {
       try {
-        const res = await axios.get("/data.json");
-        setData(res.data);
+        // const res = await axios.get("/data.json");
+        // setData(res.data);
 
         const response = await axios.get(
           `${import.meta.env.VITE_API_URL}/api/products/time`,
@@ -44,7 +44,7 @@ function Home() {
   // FIX: Displays spinner while products array waits to be loaded from the API
   if (products.length === 0) {
     return (
-      <div className="container text-center mt-5">
+      <div className="container text-center mt-5 d-flex align-items-center justify-content-center">
         <div className="spinner-grow text-primary" role="status">
           <span className="visually-hidden">Loading...</span>
         </div>
@@ -52,13 +52,13 @@ function Home() {
     );
   }
 
-  const categories = [
-    { key: "men", label: "Mens" },
-    { key: "kids", label: "Kids" },
-    { key: "women", label: "Womens" },
-    { key: "travel", label: "Travel" },
-    { key: "toys", label: "Toys" },
-  ];
+  // const categories = [
+  //   { key: "men", label: "Mens" },
+  //   { key: "kids", label: "Kids" },
+  //   { key: "women", label: "Womens" },
+  //   { key: "travel", label: "Travel" },
+  //   { key: "toys", label: "Toys" },
+  // ];
 
   return (
     <div id="home" className="w-100 overflow-hidden">
@@ -113,7 +113,7 @@ function Home() {
       </div>
 
       {/* Quick Links Categories */}
-      <div className="container mt-3">
+      {/* <div className="container mt-3">
         <div className="row row-cols-5 g-2 justify-content-center">
           {categories.map((cat) => (
             <div className="col text-center" key={cat.key}>
@@ -129,7 +129,7 @@ function Home() {
             </div>
           ))}
         </div>
-      </div>
+      </div> */}
 
       {/* New Arrivals Header */}
       <div className="mt-2 p-3">

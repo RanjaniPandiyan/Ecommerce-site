@@ -49,7 +49,7 @@ export default function Category() {
   return (
     <div className="container-fluid">
       <div className="row">
-        <nav
+        <aside
           id="sidebarMenu"
           className="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse"
         >
@@ -58,12 +58,27 @@ export default function Category() {
               <li className="nav-item ">
                 <h5 className="text-muted"> Category</h5>
               </li>
+              <li className="nav-item ms-3">
+                <div
+                  className={`category-link text-dark p-3 fs-6  ${
+                    selectCategory === "" ? "active" : ""
+                  }`}
+                  onClick={() => handleClick("")}
+                >
+                  All
+                </div>
+              </li>
               {categorys.map((cat) => (
                 <li className="nav-item ms-3" key={cat._id}>
                   <div
-                    className="text-dark p-2 fs-6"
+                    className={`category-link text-dark p-3 fs-6 ${
+                      selectCategory === cat.category ? "active" : ""
+                    }`}
                     style={{ cursor: "pointer" }}
-                    onClick={() => handleClick(cat.category)}
+                    onClick={() => {
+                      setSelectCategory(cat.category);
+                      handleClick(cat.category);
+                    }}
                   >
                     {cat.category}
                   </div>
@@ -71,7 +86,7 @@ export default function Category() {
               ))}
             </ul>
           </div>
-        </nav>
+        </aside>
 
         <main className="col-md-9 ms-sm-auto col-lg-10 px-md-4">
           <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
@@ -92,7 +107,7 @@ export default function Category() {
               </ol>
             </nav>
           </div>
-          <div className="d-flex justify-content-end">
+          <div className="sort-sticky d-flex justify-content-end">
             <div className="p-2">
               <h6>Sort By </h6>
             </div>

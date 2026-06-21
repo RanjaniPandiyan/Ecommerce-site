@@ -34,6 +34,46 @@ body {
   font-size: 20px;
   padding-right: 40px;
 }
+.nav-link:hover {
+  color: black;
+  transform: scale(1.1);
+}
+.nav-link.active {
+  border-bottom: 2px solid transparent;
+  border-image: linear-gradient(
+    0.25turn,
+    rgba(255, 249, 34),
+    rgba(255, 0, 128),
+    rgba(56, 2, 155, 0)
+  );
+  border-image-slice: 1;
+  width: 100%;
+}
+.category-link:hover {
+  color: black;
+  transform: scale(1.1);
+  border-bottom: 2px solid transparent;
+  border-image: linear-gradient(
+    0.25turn,
+    rgba(255, 249, 34),
+    rgba(255, 0, 128),
+    rgba(56, 2, 155, 0)
+  );
+  border-image-slice: 1;
+  width: 50%;
+}
+
+.category-link.active {
+  border-bottom: 2px solid transparent;
+  border-image: linear-gradient(
+    0.25turn,
+    rgba(255, 249, 34),
+    rgba(255, 0, 128),
+    rgba(56, 2, 155, 0)
+  );
+  border-image-slice: 1;
+  width: 50%;
+}
 @media (max-width: 991px) {
   .d-lg-none {
     margin-left: 10px;
